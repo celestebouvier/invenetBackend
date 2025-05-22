@@ -10,7 +10,7 @@ class AddRoleToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Agrega el campo role como enum con valores específicos y default
-            $table->enum('role', ['admin', 'tecnico', 'docente'])->after('password');
+            $table->enum('role', ['administrador', 'tecnico', 'docente'])->after('password');
         });
     }
 
