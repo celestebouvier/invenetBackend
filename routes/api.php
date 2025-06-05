@@ -48,6 +48,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
             });
 
+            //Marcas
+            Route::apiResource('marcas', MarcaController::class);
+
 
 
 });

@@ -22,5 +22,11 @@ class Dispositivo extends Model
 
     public function reportes() {
     return $this->hasMany(Reporte::class);
-}
+    }
+
+    public function marca() {
+    return $this->belongsTo(Marca::class);
+    }
+
+
 }
