@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ReporteController extends Controller
 {
-    // Listar todos los reportes (admin y técnicos)
+    // Listar todos los reportes
     public function index()
     {
         $reportes = Reporte::with(['usuario', 'dispositivo'])->orderBy('created_at', 'desc')->get();
@@ -33,7 +33,7 @@ class ReporteController extends Controller
         return response()->json($reporte, 201);
     }
 
-    // Actualizar estado (ej: marcar como revisado)
+    // Actualizar estado
     public function update(Request $request, $id)
     {
         $reporte = Reporte::findOrFail($id);

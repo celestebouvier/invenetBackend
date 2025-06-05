@@ -51,5 +51,7 @@ class User extends Authenticatable
 
     public function reportes() {
     return $this->hasMany(Reporte::class);
-}
+    }
+
+
 }
