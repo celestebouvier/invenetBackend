@@ -36,7 +36,6 @@ class DatosPruebaSeeder extends Seeder
 
         // Dispositivos
         $disp1 = Dispositivo::create([
-            'nombre' => 'PC Multimedia 01',
             'tipo' => 'Computadora',
             'marca' => 'Dell',
             'modelo' => 'Optiplex 7010',
@@ -46,7 +45,6 @@ class DatosPruebaSeeder extends Seeder
         ]);
 
         $disp2 = Dispositivo::create([
-            'nombre' => 'Proyector Aula 2',
             'tipo' => 'Proyector',
             'marca' => 'Epson',
             'modelo' => 'EB-X06',
