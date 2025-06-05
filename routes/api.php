@@ -30,24 +30,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         // Acceso restringido a administradores
         Route::middleware(['admin'])->group(function () {
-        // Usuarios (CRUD completo)
-        Route::apiResource('usuarios', UserController::class);
+             // Usuarios (CRUD completo)
+            Route::apiResource('usuarios', UserController::class);
 
-        // Dispositivos (crear, actualizar, eliminar)
-        Route::post('/dispositivos', [DispositivoController::class, 'store']);
-        Route::put('/dispositivos/{id}', [DispositivoController::class, 'update']);
-        Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
+            // Dispositivos (crear, actualizar, eliminar)
+            Route::post('/dispositivos', [DispositivoController::class, 'store']);
+            Route::put('/dispositivos/{id}', [DispositivoController::class, 'update']);
+            Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
 
-        // Reportes
-        Route::apiResource('reportes', ReporteController::class);
+            // Reportes
+            Route::apiResource('reportes', ReporteController::class);
 
-        // Órdenes de reparación
-        Route::apiResource('ordenes', OrdenReparacionController::class);
-        Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
-        Route::get('/ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
-        Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
-    });
+             // Órdenes de reparación
+            Route::apiResource('ordenes', OrdenReparacionController::class);
+            Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
+            Route::get('/ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
+            Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
+            });
 
-Route::middleware('auth:sanctum')->put('ordenes/{id}/completar', [OrdenReparacionController::class, 'completarOrden']);
+
 
 });
