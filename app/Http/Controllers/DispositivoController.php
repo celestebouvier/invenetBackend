@@ -17,12 +17,13 @@ class DispositivoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tipo' => 'required|string|max:255',
+            'tipo' => 'required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
             'marca' => 'required|string|max:255',
             'modelo' => 'nullable|string|max:255',
-            'nro_serie' => 'required|string|unique:dispositivos',
+            'nro_serie' => 'nullable|string|unique:dispositivos',
             'ubicacion' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'estado' => 'required|in:activo,baja,en reparacion'
         ]);
 
         $dispositivo = Dispositivo::create($request->all());
@@ -36,12 +37,13 @@ class DispositivoController extends Controller
         $dispositivo = Dispositivo::findOrFail($id);
 
         $request->validate([
-            'tipo' => 'required|string|max:255',
+            'tipo' => 'required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
             'marca' => 'required|string|max:255',
             'modelo' => 'nullable|string|max:255',
-            'nro_serie' => 'required|string|unique:dispositivos,nro_serie,' . $id,
+            'nro_serie' => 'nullable|string|unique:dispositivos,nro_serie,' . $id,
             'ubicacion' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
+            'estado' => 'required|in:activo,baja,en reparacion'
         ]);
 
         $dispositivo->update($request->all());
