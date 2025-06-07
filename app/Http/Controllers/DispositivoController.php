@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Dispositivo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class DispositivoController extends Controller
 {
@@ -16,19 +19,23 @@ class DispositivoController extends Controller
     // Crear un nuevo dispositivo
     public function store(Request $request)
     {
-        $request->validate([
-            'tipo' => 'required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
-            'marca' => 'required|string|max:255',
-            'modelo' => 'nullable|string|max:255',
-            'nro_serie' => 'nullable|string|unique:dispositivos',
-            'ubicacion' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'estado' => 'required|in:activo,baja,en reparacion'
-        ]);
+    $validated = $request->validate([
+        'tipo' => 'required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
+        'marca' => 'required|string|max:255',
+        'modelo' => 'nullable|string|max:255',
+        'nro_serie' => 'nullable|string|unique:dispositivos',
+        'ubicacion' => 'required|string|max:255',
+        'descripcion' => 'nullable|string',
+        'estado' => 'required|in:activo,baja,en reparacion'
+    ]);
 
-        $dispositivo = Dispositivo::create($request->all());
+    //  Generar el codigo_qr automáticamente al crear el dispositivo
+    $validated['codigo_qr'] = Str::uuid(); // genera un UUID único
 
-        return response()->json($dispositivo, 201);
+    // Crear el dispositivo con todos los datos
+    $dispositivo = Dispositivo::create($validated);
+
+    return response()->json($dispositivo, 201);
     }
 
     // Actualizar un dispositivo
@@ -65,4 +72,25 @@ class DispositivoController extends Controller
     {
         return Dispositivo::findOrFail($id);
     }
+
+    public function downloadQr($id)
+    {
+    $dispositivo = Dispositivo::findOrFail($id);
+    $codigo_qr = $dispositivo->codigo_qr;
+
+    $pdf = Pdf::loadView('qr-pdf', [
+        'codigo_qr' => $codigo_qr,
+        'id' => $dispositivo->id
+    ]);
+
+    return $pdf->download("QR_Dispositivo_{$id}.pdf");
+    }
+
+    public function verQr($id)
+    {
+    $dispositivo = Dispositivo::findOrFail($id);
+    return view('qr', compact('dispositivo'));
+    }
+
+
 }

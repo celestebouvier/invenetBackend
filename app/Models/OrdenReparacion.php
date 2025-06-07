@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OrdenReparacion extends Model
 {
-    protected $fillable = ['reporte_id', 'tecnico_id', 'detalles', 'estado' ,'completada'];
+    protected $fillable = ['reporte_id', 'tecnico_id', 'dispositivo_id', 'detalles', 'estado' ,'completada'];
 
 public function reporte()
 {

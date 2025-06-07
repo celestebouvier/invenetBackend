@@ -21,6 +21,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Acceso general (ver dispositivos)
     Route::get('/dispositivos', [DispositivoController::class, 'index']);
     Route::get('/dispositivos/{id}', [DispositivoController::class, 'show']);
+    Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
+    Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);
+
 
     // Crear un nuevo reporte (solo DOCENTE autenticado)
     Route::post('/reportes', [ReporteController::class, 'store']);
