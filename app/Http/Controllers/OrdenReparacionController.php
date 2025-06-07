@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OrdenReparacion;
 use App\Models\Reporte;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -24,6 +25,13 @@ class OrdenReparacionController extends Controller
             'tecnico_id' => 'required|exists:users,id',
             'detalles'   => 'nullable|string',
         ]);
+
+        // Validar que el técnico sea realmente un usuario con rol "tecnico"
+        $tecnico = User::find($validated['tecnico_id']);
+
+        if (!$tecnico || $tecnico->role !== 'tecnico') {
+        return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
+        }
 
         $orden = OrdenReparacion::create([
             'reporte_id' => $validated['reporte_id'],

@@ -29,5 +29,10 @@ class Dispositivo extends Model
     return $this->belongsTo(Marca::class);
     }
 
+    public function ordenes_reparacion() {
+    return $this->hasMany(OrdenReparacion::class);
+    }
+
+
 
 }

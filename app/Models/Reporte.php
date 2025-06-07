@@ -10,7 +10,7 @@ class Reporte extends Model
     return $this->belongsTo(User::class, 'user_id');
 }
 
-public function dispositivo() {
+    public function dispositivo() {
     return $this->belongsTo(Dispositivo::class);
 }
 }

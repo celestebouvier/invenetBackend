@@ -45,7 +45,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            
+
         ];
     }
 
@@ -53,5 +53,8 @@ class User extends Authenticatable
     return $this->hasMany(Reporte::class);
     }
 
+    public function ordenesReparacion() {
+    return $this->hasMany(OrdenReparacion::class, 'tecnico_id');
+    }
 
 }
