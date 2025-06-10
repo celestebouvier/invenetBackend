@@ -10,10 +10,14 @@
 </head>
 <body>
     <h2>Etiqueta QR de Dispositivo</h2>
-    <div>{!! QrCode::size(200)->generate($codigo_qr) !!}</div>
+
+    <div class="qr">
+        {!! QrCode::format('svg')->size(200)->generate($dispositivo->id) !!}
+    </div>
     <div class="info">
-        <p><strong>ID:</strong> {{ $id }}</p>
-        <p><strong>Código QR:</strong> {{ $codigo_qr }}</p>
+        <p><strong>Dispositivo:</strong> {{ $dispositivo->tipo }}</p>
+        <p><strong>ID:</strong> {{ $dispositivo->id }}</p>
+        <p><strong>Código QR:</strong> {{ $dispositivo->id }}</p>
     </div>
 </body>
 </html>

@@ -13,15 +13,17 @@ class CreateOrdenesReparacionTable extends Migration
     {
         Schema::create('ordenes_reparacion', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dispositivo_id');
-            $table->unsignedBigInteger('usuario_id');
-            $table->text('descripcion');
+            $table->unsignedBigInteger('usuario_id') ->nullable;
+            $table->unsignedBigInteger('reporte_id');
+            $table->unsignedBigInteger('tecnico_id');
+            $table->text('descripcion')->nullable;
             $table->enum('estado', ['pendiente', 'en_proceso', 'completada'])->default('pendiente');
             $table->timestamps();
 
             // Claves foráneas
-            $table->foreign('dispositivo_id')->references('id')->on('dispositivos')->onDelete('cascade');
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('tecnico_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('reporte_id')->references('id')->on('reportes')->onDelete('cascade');
         });
     }
 

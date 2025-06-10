@@ -36,7 +36,7 @@ class DatosPruebaSeeder extends Seeder
 
         // Dispositivos
         $disp1 = Dispositivo::create([
-            'tipo' => 'Computadora',
+            'tipo' => 'CPU',
             'marca' => 'Dell',
             'modelo' => 'Optiplex 7010',
             'nro_serie' => 'ABC123XYZ',
@@ -55,14 +55,13 @@ class DatosPruebaSeeder extends Seeder
 
         // Órdenes de reparación
         OrdenReparacion::create([
-            'dispositivo_id' => $disp1->id,
+
             'usuario_id' => $admin->id,
             'descripcion' => 'No enciende la PC',
             'estado' => 'pendiente',
         ]);
 
         OrdenReparacion::create([
-            'dispositivo_id' => $disp2->id,
             'usuario_id' => $tecnico->id,
             'descripcion' => 'Proyector con imagen borrosa',
             'estado' => 'en_proceso',

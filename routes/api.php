@@ -47,12 +47,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
              // Órdenes de reparación
             Route::apiResource('ordenes', OrdenReparacionController::class);
             Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
+            Route::get('ordenes/{id}/verorden', [OrdenReparacionController::class, 'verOrden']);
             Route::get('/ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
             Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
-            });
+
 
             //Marcas
             Route::apiResource('marcas', MarcaController::class);
+
+            });
+
+
 
 
 

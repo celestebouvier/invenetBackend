@@ -23,7 +23,7 @@ class OrdenReparacionController extends Controller
         $validated = $request->validate([
             'reporte_id' => 'required|exists:reportes,id',
             'tecnico_id' => 'required|exists:users,id',
-            'detalles'   => 'nullable|string',
+            'descripcion'   => 'nullable|string',
         ]);
 
         // Validar que el técnico sea realmente un usuario con rol "tecnico"
@@ -36,9 +36,9 @@ class OrdenReparacionController extends Controller
         $orden = OrdenReparacion::create([
             'reporte_id' => $validated['reporte_id'],
             'tecnico_id' => $validated['tecnico_id'],
-            'detalles'   => $validated['detalles'] ?? null,
+            'descripcion'   => $validated['descripcion'] ?? null,
             'estado'     => 'pendiente',
-            'completada' => false,
+
         ]);
 
         return response()->json($orden, 201);
@@ -68,11 +68,25 @@ class OrdenReparacionController extends Controller
         return $pdf->download('orden_reparacion_'.$id.'.pdf');
     }
 
+    // Ver orden
+    public function verOrden($id)
+    {
+    $orden = OrdenReparacion::with(['reporte', 'tecnico'])->findOrFail($id);
+    return view('ordenes/pdf', compact('orden'));
+    }
+
+
+
+
+
+
+
+
     // Completar una orden (solo el técnico asignado)
     public function completarOrden(Request $request, $id)
     {
     $request->validate([
-        'detalles' => 'required|string',
+        'descripcion' => 'required|string',
     ]);
 
     $orden = OrdenReparacion::findOrFail($id);
@@ -83,9 +97,9 @@ class OrdenReparacionController extends Controller
     }
 
     $orden->update([
-        'detalles' => $request->detalles,
+        'descripcion' => $request->descripcion,
         'estado'     => 'completada',
-        'completada' => true,
+
     ]);
 
     return response()->json(['mensaje' => 'Orden completada con éxito', 'orden' => $orden]);
@@ -100,14 +114,14 @@ class OrdenReparacionController extends Controller
         return response()->json(['message' => 'Acceso no autorizado'], 403);
     }
 
-    $resumen = [
+    $resumenes = [
         'pendientes' => OrdenReparacion::where('estado', 'pendiente')->count(),
         'en_proceso' => OrdenReparacion::where('estado', 'en_proceso')->count(),
         'completadas' => OrdenReparacion::where('estado', 'completada')->count(),
         'total' => OrdenReparacion::count(),
     ];
 
-    return response()->json($resumen);
+    return response()->json($resumenes);
     }
 
     // Filtrar órdenes por estado
@@ -118,7 +132,7 @@ class OrdenReparacionController extends Controller
         }
 
         $ordenes = OrdenReparacion::where('estado', $estado)
-            ->with(['reporte', 'tecnico', 'dispositivo'])
+            ->with(['reporte', 'tecnico'])
             ->get();
 
         return response()->json($ordenes);
