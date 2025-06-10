@@ -14,7 +14,7 @@ class OrdenReparacionController extends Controller
      // Mostrar todas las órdenes de reparación
     public function index()
     {
-        return OrdenReparacion::with(['reporte', 'tecnico', 'dispositivo'])->get();
+        return OrdenReparacion::with(['reporte', 'tecnico'])->get();
     }
 
     // Crear orden de reparación
@@ -47,7 +47,7 @@ class OrdenReparacionController extends Controller
    // Mostrar una orden específica
     public function show(OrdenReparacion $ordenReparacion)
     {
-        return $ordenReparacion->load(['reporte', 'tecnico', 'dispositivo']);
+        return $ordenReparacion->load(['reporte', 'tecnico']);
     }
 
 
@@ -74,11 +74,6 @@ class OrdenReparacionController extends Controller
     $orden = OrdenReparacion::with(['reporte', 'tecnico'])->findOrFail($id);
     return view('ordenes/pdf', compact('orden'));
     }
-
-
-
-
-
 
 
 

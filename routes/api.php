@@ -32,7 +32,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/ordenes/{id}/completar', [OrdenReparacionController::class, 'completarOrden']);
 
         // Acceso restringido a administradores
-        Route::middleware(['admin'])->group(function () {
+    Route::middleware(['admin'])->group(function () {
              // Usuarios (CRUD completo)
             Route::apiResource('usuarios', UserController::class);
 
@@ -45,12 +45,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::apiResource('reportes', ReporteController::class);
 
              // Órdenes de reparación
-            Route::apiResource('ordenes', OrdenReparacionController::class);
+
             Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
             Route::get('ordenes/{id}/verorden', [OrdenReparacionController::class, 'verOrden']);
-            Route::get('/ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
+            Route::get('ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
             Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
-
+            Route::apiResource('ordenes', OrdenReparacionController::class);
 
             //Marcas
             Route::apiResource('marcas', MarcaController::class);
