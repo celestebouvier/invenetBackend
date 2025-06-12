@@ -21,10 +21,10 @@ class DispositivoController extends Controller
     {
     $validated = $request->validate([
         'tipo' => 'required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
-        'marca' => 'required|string|max:255',
+        'marca' => 'required|exists:marcas,nombre',
         'modelo' => 'nullable|string|max:255',
         'nro_serie' => 'nullable|string|unique:dispositivos',
-        'ubicacion' => 'required|string|max:255',
+        'ubicacion' => 'required|in:Sala Informática 1,Sala Informática 2,Sala Informática 3,Sala Multimedia 1,Sala Multimedia 2,Sala Multimedia 3,Otro',
         'descripcion' => 'nullable|string',
         'estado' => 'required|in:activo,baja,en reparacion'
     ]);
@@ -45,10 +45,10 @@ class DispositivoController extends Controller
 
     $request->validate([
         'tipo' => 'sometimes|required|in:CPU,netbook,televisor,proyector,monitor,router,switch',
-        'marca' => 'sometimes|required|string|max:255',
+        'marca' => 'sometimes|required|exists:marcas,nombre',
         'modelo' => 'nullable|string|max:255',
         'nro_serie' => 'nullable|string|unique:dispositivos,nro_serie,' . $id,
-        'ubicacion' => 'sometimes|required|string|max:255',
+        'ubicacion' => 'sometimes|required|in:Sala Informática 1,Sala Informática 2,Sala Informática 3,Sala Multimedia 1,Sala Multimedia 2,Sala Multimedia 3,Otro',
         'descripcion' => 'nullable|string',
         'estado' => 'sometimes|required|in:activo,baja,en reparacion',
         ], [

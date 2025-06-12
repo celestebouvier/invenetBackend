@@ -12,7 +12,7 @@ use App\Models\User;
 
 class PasswordResetController extends Controller
 {
-    // Paso 1: solicitar código
+    // Paso 1: Solicitar código
     public function sendResetCode(Request $request)
     {
          $request->validate([
@@ -35,7 +35,7 @@ class PasswordResetController extends Controller
         return response()->json(['message' => 'Código enviado al correo.'], 200);
     }
 
-    // Paso 2: verificar código
+    // Paso 2: Verificar código
     public function verifyCode(Request $request)
     {
         $request->validate([

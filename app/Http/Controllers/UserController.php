@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\JsonResponse;
 
@@ -48,6 +49,11 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        // Validar si el usuario logueado es administrador o el mismo usuario
+        if (Auth::user()->role !== 'administrador' && Auth::id() !== $user->id) {
+        return response()->json(['message' => 'No autorizado'], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'email' => ['sometimes', 'required', 'email', Rule::unique('users')->ignore($user->id)],
@@ -59,6 +65,11 @@ class UserController extends Controller
             $validated['password'] = Hash::make($validated['password']);
         } else {
             unset($validated['password']);
+        }
+
+        // Solo los administradores pueden cambiar el rol
+        if (Auth::user()->role !== 'administrador') {
+        unset($validated['role']);
         }
 
         $user->update($validated);

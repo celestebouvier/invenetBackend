@@ -8,6 +8,8 @@ use App\Http\Controllers\DispositivoController;
 use App\Http\Controllers\OrdenReparacionController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use Illuminate\Support\Facades\Mail;
+
 
 
 
@@ -25,6 +27,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Logout
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    //Actualizar datos de usuario (solo Usuario logueado)
+    Route::put('/usuarios/{id}', [UserController::class, 'update']);
 
     // Acceso general (ver dispositivos)
     Route::get('/dispositivos', [DispositivoController::class, 'index']);

@@ -19,7 +19,15 @@ return new class extends Migration
             $table->string('modelo')->nullable();
             $table->string('codigo_qr')->unique(); // Valor asociado al QR
             $table->text('descripcion')->nullable();
-            $table->string('ubicacion'); // Sala informática o multimedia
+            $table->enum('ubicacion', [
+            'Sala Informática 1',
+            'Sala Informática 2',
+            'Sala Informática 3',
+            'Sala Multimedia 1',
+            'Sala Multimedia 2',
+            'Sala Multimedia 3',
+            'Otro',
+            ]);
             $table->string('nro_serie')->unique();
             $table->timestamps();
         });
