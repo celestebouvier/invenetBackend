@@ -7,10 +7,18 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DispositivoController;
 use App\Http\Controllers\OrdenReparacionController;
 use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\Auth\PasswordResetController;
+
+
 
 // Rutas públicas
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+//Reset contraseña
+Route::post('/password/send-code', [PasswordResetController::class, 'sendResetCode']);
+Route::post('/password/verify-code', [PasswordResetController::class, 'verifyCode']);
+Route::post('/password/reset', [PasswordResetController::class, 'resetPassword']);
 
 // Autenticación con Sanctum
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -24,8 +32,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
     Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);
 
-
-    // Crear un nuevo reporte (solo DOCENTE autenticado)
+    //Reportes
+    // Crear un nuevo reporte (solo DOCENTE o ADMINISTRADOR)
     Route::post('/reportes', [ReporteController::class, 'store']);
 
     // ORDENES DE REPARACIÓN (técnicos pueden marcar como completadas)
@@ -42,7 +50,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
 
             // Reportes
-            Route::apiResource('reportes', ReporteController::class);
+            Route::get('/reportes', [ReporteController::class, 'index']); // con ?estado=pending o ?estado=revisado
+            Route::put('/reportes/{id}/estado', [ReporteController::class, 'updateEstado']);
+            Route::delete('/reportes/{id}', [ReporteController::class, 'destroy']);
 
              // Órdenes de reparación
 

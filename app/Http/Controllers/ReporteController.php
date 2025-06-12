@@ -8,16 +8,36 @@ use Illuminate\Support\Facades\Auth;
 
 class ReporteController extends Controller
 {
-    // Listar todos los reportes
+    // Listar todos los reportes (solo admins, opcionalmente filtrado por estado)
     public function index()
     {
-        $reportes = Reporte::with(['usuario', 'dispositivo'])->orderBy('created_at', 'desc')->get();
+        if (Auth::user()->role !== 'administrador') {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
+        $estado = $request->query('estado');
+
+        $reportes = Reporte::with(['usuario', 'dispositivo'])
+         ->when($estado, function ($query, $estado) {
+            return $query->where('estado', $estado);
+        })
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+
         return response()->json($reportes);
     }
 
-    // Crear un nuevo reporte (docente)
+    // Crear un nuevo reporte (docente o administrador)
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        // Verificar que el usuario sea 'administrador' o 'docente'
+        if (!in_array($user->role, ['administrador', 'docente'])) {
+        return response()->json(['mensaje' => 'No autorizado.'], 403);
+        }
+
         $request->validate([
             'dispositivo_id' => 'required|exists:dispositivos,id',
             'descripcion' => 'required|string|max:1000',
@@ -34,23 +54,31 @@ class ReporteController extends Controller
     }
 
     // Actualizar estado
-    public function update(Request $request, $id)
+    public function updateEstado(Request $request, $id)
     {
-        $reporte = Reporte::findOrFail($id);
+
+        if (Auth::user()->role !== 'administrador') {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
 
         $request->validate([
             'estado' => 'required|in:pendiente,revisado'
         ]);
 
+        $reporte = Reporte::findOrFail($id);
         $reporte->estado = $request->estado;
         $reporte->save();
 
-        return response()->json($reporte);
+        return response()->json(['message' => 'Estado actualizado correctamente', 'reporte' => $reporte]);
     }
 
     // Eliminar un reporte
     public function destroy($id)
     {
+        if (Auth::user()->role !== 'administrador') {
+            return response()->json(['message' => 'No autorizado'], 403);
+        }
+
         $reporte = Reporte::findOrFail($id);
         $reporte->delete();
 
