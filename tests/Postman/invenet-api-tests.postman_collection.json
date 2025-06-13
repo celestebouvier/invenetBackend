@@ -1218,6 +1218,69 @@
 			"response": []
 		},
 		{
+			"name": "Ver ordenes pendientes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "24|zzDdPUo318H2pK6hEIBKr46iOoXMlFC5fXUwhwwZ4c467c62",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Value",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Key",
+						"value": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/ordenes/estado/pendiente",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"ordenes",
+						"estado",
+						"pendiente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Cambiar contraseña antes de loguearse: ingresar mail",
 			"request": {
 				"method": "POST",
