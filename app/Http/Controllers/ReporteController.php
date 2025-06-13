@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class ReporteController extends Controller
 {
     // Listar todos los reportes (solo admins, opcionalmente filtrado por estado)
-    public function index()
+    public function index(Request $request)
     {
         if (Auth::user()->role !== 'administrador') {
             return response()->json(['message' => 'No autorizado'], 403);

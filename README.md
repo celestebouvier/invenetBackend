@@ -7,55 +7,87 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# INVENET - Sistema de Inventario de Activos Informáticos ESCOM44
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Este proyecto es una aplicación web para la gestión de dispositivos informáticos (nivel superior de ESCOM44). El backend está desarrollado en Laravel 12 mientras que el frontend usa Angular (no incluido en este repositorio). Este README proporciona las instrucciones para clonar e instalar el backend de INVENET en un nuevo entorno local.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+###  Requisitos del sistema
 
-## Learning Laravel
+- PHP >= 8.2
+- Composer
+- MySQL (se recomienda usar **XAMPP** para facilitar la configuración)
+- Git
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instrucciones de Instalación
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Clona el repositorio desde GitHub
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+bash
+git clone https://github.com/celestebouvier/invenet.git
+cd invenet
 
-## Laravel Sponsors
+composer install
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Crea el archivo env
+cp .env.example .env
 
-### Premium Partners
+## Edita el archivo .env 
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+APP_NAME=invenetbackend
+APP_URL=http://localhost
 
-## Contributing
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=invenetbackend
+DB_USERNAME=root
+DB_PASSWORD=   # Deja en blanco si usas XAMPP sin contraseña
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=09e00b13aa187d
+MAIL_PASSWORD=****ea79
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=no-reply@invenet.test
+MAIL_FROM_NAME="Invenet"
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Activa el servidor Apache y MySQL en XAMPP
 
-## Security Vulnerabilities
+## Genera la clave de la aplicación tras crear el archivo .env
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Base de datos
+Abre phpMyAdmin
+Importa esta base de datos: \database\backups\invenetbackend.sql
 
-## License
+# Autenticación: Laravel Sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Para la generación de PDFs, se requiere instalar 
+composer require barryvdh/laravel-dompdf
+
+# Para la creación de etiquetas QR, instalar
+composer require simplesoftwareio/simple-qrcode
+
+# Inicia el servidor local. Esto iniciará el backend en http://localhost:8000. 
+php artisan serve
+
+## Ejecutar pruebas de la API con Postman
+### Importar la colección de pruebas
+
+1. Abre la aplicación Postman
+2. Haz clic en el botón "Import"*
+3. Selecciona la opción **"Upload Files"**
+4. Busca y selecciona el archivo /tests/postman/invenet-api-tests.postman_collection.json
+
+### Ejecutar las pruebas importadas
+
+1. Abre la colección desde la pestaña **Collections**
+2. Asegúrate de tener activo **XAMPP (Apache + MySQL)** y que la API Laravel esté corriendo en `http://localhost:8000`
+3. Ejecuta las pruebas manualmente o mediante la opción **Run Collection**
+
