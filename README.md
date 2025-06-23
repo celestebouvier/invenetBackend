@@ -10,7 +10,7 @@
 # INVENET - Sistema de Inventario de Activos Informáticos ESCOM44
 
 Este proyecto es una aplicación web para la gestión de dispositivos informáticos (nivel superior de ESCOM44). El backend está desarrollado en Laravel 12 mientras que el frontend usa Angular (no incluido en este repositorio). Este README proporciona las instrucciones para clonar e instalar el backend de INVENET en un nuevo entorno local.
-
+https://docs.google.com/document/d/1kRb4DnY7cJMUtFtt3Aw5mOFR2Tkb6Jyl/edit?usp=sharing&ouid=114401228873545265277&rtpof=true&sd=true 
 ---
 
 ###  Requisitos del sistema
