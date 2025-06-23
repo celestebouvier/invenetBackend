@@ -25,7 +25,7 @@ Este proyecto es una aplicación web para la gestión de dispositivos informáti
 ### Clona el repositorio desde GitHub
 
 bash
-git clone https://github.com/celestebouvier/invenet.git
+git clone https://github.com/celestebouvier/invenetBackend.git
 cd invenet
 
 composer install
