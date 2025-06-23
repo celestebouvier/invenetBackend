@@ -23,8 +23,6 @@ https://docs.google.com/document/d/1kRb4DnY7cJMUtFtt3Aw5mOFR2Tkb6Jyl/edit?usp=sh
 ## Instrucciones de Instalación
 
 ### Clona el repositorio desde GitHub
-
-bash
 git clone https://github.com/celestebouvier/invenetBackend.git
 cd invenet
 
