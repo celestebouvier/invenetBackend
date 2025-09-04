@@ -115,5 +115,17 @@ class DispositivoController extends Controller
     return view('qr-pdf', compact('dispositivo'));
     }
 
-
+    // Obtener enums para dropdowns
+    public function enums()
+    {
+    return response()->json([
+        'tipo' => ['CPU','netbook','televisor','proyector','monitor','router','switch'],
+        'marca' => \App\Models\Marca::pluck('nombre'), 
+        'sala' => [
+            'Sala Informática 1','Sala Informática 2','Sala Informática 3',
+            'Sala Multimedia 1','Sala Multimedia 2','Sala Multimedia 3','Otro'
+        ],
+        'estado' => ['activo','baja','en reparacion'],
+    ]);
+}
 }

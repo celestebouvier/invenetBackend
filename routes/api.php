@@ -54,6 +54,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/dispositivos', [DispositivoController::class, 'store']);
             Route::put('/dispositivos/{id}', [DispositivoController::class, 'update']);
             Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
+            Route::get('/dispositivos/enums', [DispositivoController::class, 'enums']);
+
 
             // Reportes
             Route::get('/reportes', [ReporteController::class, 'index']); // con ?estado=pending o ?estado=revisado
