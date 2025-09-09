@@ -95,7 +95,11 @@ class DispositivoController extends Controller
     // Ver un dispositivo (opcional)
     public function show($id)
     {
-        return Dispositivo::findOrFail($id);
+    $dispositivo = Dispositivo::find($id);
+    if (!$dispositivo) {
+        return response()->json(['message' => 'Dispositivo no encontrado'], 404);
+    }
+    return response()->json($dispositivo);
     }
 
 
@@ -120,7 +124,7 @@ class DispositivoController extends Controller
     {
     return response()->json([
         'tipo' => ['CPU','netbook','televisor','proyector','monitor','router','switch'],
-        'marca' => \App\Models\Marca::pluck('nombre'), 
+        'marca' => \App\Models\Marca::pluck('nombre'),
         'sala' => [
             'Sala Informática 1','Sala Informática 2','Sala Informática 3',
             'Sala Multimedia 1','Sala Multimedia 2','Sala Multimedia 3','Otro'

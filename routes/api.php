@@ -55,6 +55,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('/dispositivos/{id}', [DispositivoController::class, 'update']);
             Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
             Route::get('/dispositivos/enums', [DispositivoController::class, 'enums']);
+            Route::get('/dispositivos/{id}', [DispositivoController::class, 'show']);
 
 
             // Reportes
