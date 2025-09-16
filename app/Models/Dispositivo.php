@@ -16,7 +16,8 @@ class Dispositivo extends Model
         'nro_serie',
         'ubicacion',
         'estado',
-        'descripcion'
+        'descripcion',
+        'codigo_qr'
     ];
 
 
