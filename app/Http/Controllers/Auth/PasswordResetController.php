@@ -27,10 +27,12 @@ class PasswordResetController extends Controller
             ['code' => $code, 'created_at' => now()]
         );
 
-        Mail::raw("Tu código de recuperación es: $code", function ($message) use ($request) {
+        /*Mail::raw("Tu código de recuperación es: $code", function ($message) use ($request) {
             $message->to($request->email)
                     ->subject('Código de recuperación de contraseña');
-        });
+        });*/
+
+        \Log::info("Código enviado a {$request->email}: $code");
 
         return response()->json(['message' => 'Código enviado al correo.'], 200);
     }

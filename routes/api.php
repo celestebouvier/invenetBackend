@@ -30,10 +30,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     //Actualizar datos de usuario (solo Usuario logueado)
+    Route::get('/perfil', [UserController::class, 'showProfile']);
+    Route::put('/perfil', [UserController::class, 'updateProfile']);
     Route::put('/usuarios/{id}', [UserController::class, 'update']);
 
     // Acceso general (ver dispositivos)
-    Route::get('/dispositivos', [DispositivoController::class, 'index']);
+    Route::get('/inventario', [DispositivoController::class, 'index']);
     Route::get('/dispositivos/{id}', [DispositivoController::class, 'show']);
     Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
     Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);

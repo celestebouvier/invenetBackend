@@ -87,4 +87,32 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Usuario eliminado correctamente.']);
     }
+
+    // Mostrar datos del usuario autenticado
+public function showProfile(Request $request)
+{
+    return response()->json($request->user(), 200);
+}
+
+// Actualizar datos del usuario autenticado
+public function updateProfile(Request $request)
+{
+    $user = $request->user(); // obtiene el usuario logueado
+
+    $validated = $request->validate([
+        'name' => 'sometimes|required|string|max:255',
+        'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
+        'password' => 'nullable|string|min:6|confirmed'
+    ]);
+
+    if (!empty($validated['password'])) {
+        $validated['password'] = \Hash::make($validated['password']);
+    } else {
+        unset($validated['password']);
+    }
+
+    $user->update($validated);
+
+    return response()->json(['message' => 'Datos actualizados correctamente', 'user' => $user], 200);
+}
 }
