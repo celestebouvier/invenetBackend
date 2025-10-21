@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Mail;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
+Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);
+
 //Reset contraseña
 Route::post('/password/send-code', [PasswordResetController::class, 'sendResetCode']);
 Route::post('/password/verify-code', [PasswordResetController::class, 'verifyCode']);
@@ -37,8 +40,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Acceso general (ver dispositivos)
     Route::get('/inventario', [DispositivoController::class, 'index']);
     Route::get('/dispositivos/{id}', [DispositivoController::class, 'show']);
-    Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
-    Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);
 
     //Reportes
     // Crear un nuevo reporte (solo DOCENTE o ADMINISTRADOR)
