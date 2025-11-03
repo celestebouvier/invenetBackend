@@ -12,8 +12,6 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use Illuminate\Support\Facades\Mail;
 
 
-
-
 // Rutas públicas
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -61,7 +59,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/dispositivos/{id}', [DispositivoController::class, 'destroy']);
             Route::get('/dispositivos/enums', [DispositivoController::class, 'enums']);
             Route::get('/dispositivos/{id}', [DispositivoController::class, 'show']);
-
 
             // Reportes
             Route::get('/reportes', [ReporteController::class, 'index']); // con ?estado=pending o ?estado=revisado

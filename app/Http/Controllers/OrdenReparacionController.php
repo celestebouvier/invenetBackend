@@ -71,6 +71,7 @@ public function generarPDF($id)
     return response($pdf->output(), 200, [
         'Content-Type' => 'application/pdf',
         'Content-Disposition' => 'inline; filename="orden_reparacion_'.$id.'.pdf"',
+        'X-Frame-Options' => 'ALLOWALL', // dev-only
     ]);
 }
 
