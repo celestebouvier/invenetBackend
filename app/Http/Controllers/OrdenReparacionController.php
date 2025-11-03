@@ -60,13 +60,19 @@ class OrdenReparacionController extends Controller
     }
 
     // Generar PDF de una orden
-    public function generarPDF($id)
-    {
-        $orden = OrdenReparacion::with(['reporte', 'tecnico'])->findOrFail($id);
-        $pdf = Pdf::loadView('ordenes.pdf', compact('orden'));
+public function generarPDF($id)
+{
+    $orden = OrdenReparacion::with(['reporte', 'tecnico'])->findOrFail($id);
 
-        return $pdf->download('orden_reparacion_'.$id.'.pdf');
-    }
+    // Cargar vista en DomPDF
+    $pdf = Pdf::loadView('ordenes.pdf', compact('orden'));
+
+    // Forzar mostrar inline en el navegador en lugar de attachment (download)
+    return response($pdf->output(), 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="orden_reparacion_'.$id.'.pdf"',
+    ]);
+}
 
     // Ver orden
     public function verOrden($id)

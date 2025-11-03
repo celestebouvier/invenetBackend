@@ -21,6 +21,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/dispositivos/{id}/ver-qr', [DispositivoController::class, 'verQr']);
 Route::get('/dispositivos/{id}/qr-pdf', [DispositivoController::class, 'downloadQr']);
 
+Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
+
 //Reset contraseña
 Route::post('/password/send-code', [PasswordResetController::class, 'sendResetCode']);
 Route::post('/password/verify-code', [PasswordResetController::class, 'verifyCode']);
@@ -68,7 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
              // Órdenes de reparación
 
-            Route::get('ordenes/{id}/pdf', [OrdenReparacionController::class, 'generarPDF']);
+
             Route::get('ordenes/{id}/verorden', [OrdenReparacionController::class, 'verOrden']);
             Route::get('ordenes/resumen', [OrdenReparacionController::class, 'resumen']);
             Route::get('/ordenes/estado/{estado}', [OrdenReparacionController::class, 'filtrarPorEstado']);
