@@ -29,8 +29,8 @@ class OrdenReparacionController extends Controller
         // Validar que el técnico sea realmente un usuario con rol "tecnico"
         $tecnico = User::find($validated['tecnico_id']);
 
-        if (!$tecnico || $tecnico->role !== 'tecnico') {
-        return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
+        if (!$tecnico || ($tecnico->role !== 'tecnico' && $validated['tecnico_id'] !== auth()->id())) {
+            return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
         }
 
         $orden = OrdenReparacion::create([
@@ -75,7 +75,13 @@ public function generarPDF($id)
     ]);
 }
 
-    // Ver orden
+public function verOrdenWeb($id)
+{
+    $orden = OrdenReparacion::with(['reporte', 'reporte.dispositivo', 'tecnico', 'reporte.usuario'])->findOrFail($id);
+    return view('ordenes.web', compact('orden'));
+}
+
+// Ver orden
     public function verOrden($id)
     {
     $orden = OrdenReparacion::with(['reporte', 'tecnico'])->findOrFail($id);
