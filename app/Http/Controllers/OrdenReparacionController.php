@@ -19,32 +19,37 @@ class OrdenReparacionController extends Controller
 
     // Crear orden de reparación
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'reporte_id' => 'required|exists:reportes,id',
-            'tecnico_id' => 'required|exists:users,id',
-            'descripcion' => 'nullable|string',
-        ]);
+{
+    // Validación básica de entrada
+    $validated = $request->validate([
+        'reporte_id' => 'required|exists:reportes,id',
+        'tecnico_id' => 'required|exists:users,id',
+        'descripcion' => 'nullable|string',
+    ]);
 
-        // Find the selected tecnico
-        $tecnico = User::find($validated['tecnico_id']);
+    // Opcional: registrar el payload para depuración (borra luego)
+    \Log::info('Crear orden payload', ['user_id' => auth()->id(), 'payload' => $validated]);
 
-        // Allow creation if:
-        // - the selected user exists and has role 'tecnico'
-        // - OR the selected user is the authenticated user (self-assignment / reparación local)
-        if (!$tecnico || ($tecnico->role !== 'tecnico' && $validated['tecnico_id'] !== auth()->id())) {
-            return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
-        }
+    // Buscar el usuario seleccionado como técnico
+    $tecnico = \App\Models\User::find($validated['tecnico_id']);
 
-        $orden = OrdenReparacion::create([
-            'reporte_id' => $validated['reporte_id'],
-            'tecnico_id' => $validated['tecnico_id'],
-            'descripcion' => $validated['descripcion'] ?? null,
-            'estado' => 'pendiente',
-        ]);
-
-        return response()->json($orden, 201);
+    // Permitir creación si:
+    //  - el usuario seleccionado existe y su role es 'tecnico'
+    //  - O el usuario seleccionado es el mismo que está autenticado (auto-asignación)
+    if (!$tecnico || ($tecnico->role !== 'tecnico' && $validated['tecnico_id'] !== auth()->id())) {
+        return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
     }
+
+    // Crear la orden
+    $orden = \App\Models\OrdenReparacion::create([
+        'reporte_id' => $validated['reporte_id'],
+        'tecnico_id' => $validated['tecnico_id'],
+        'descripcion' => $validated['descripcion'] ?? null,
+        'estado' => 'pendiente',
+    ]);
+
+    return response()->json($orden, 201);
+}
 
    // Mostrar una orden específica
     public function show(OrdenReparacion $ordenReparacion)
