@@ -23,12 +23,15 @@ class OrdenReparacionController extends Controller
         $validated = $request->validate([
             'reporte_id' => 'required|exists:reportes,id',
             'tecnico_id' => 'required|exists:users,id',
-            'descripcion'   => 'nullable|string',
+            'descripcion' => 'nullable|string',
         ]);
 
-        // Validar que el técnico sea realmente un usuario con rol "tecnico"
+        // Find the selected tecnico
         $tecnico = User::find($validated['tecnico_id']);
 
+        // Allow creation if:
+        // - the selected user exists and has role 'tecnico'
+        // - OR the selected user is the authenticated user (self-assignment / reparación local)
         if (!$tecnico || ($tecnico->role !== 'tecnico' && $validated['tecnico_id'] !== auth()->id())) {
             return response()->json(['error' => 'El usuario seleccionado no es un técnico válido.'], 403);
         }
@@ -36,9 +39,8 @@ class OrdenReparacionController extends Controller
         $orden = OrdenReparacion::create([
             'reporte_id' => $validated['reporte_id'],
             'tecnico_id' => $validated['tecnico_id'],
-            'descripcion'   => $validated['descripcion'] ?? null,
-            'estado'     => 'pendiente',
-
+            'descripcion' => $validated['descripcion'] ?? null,
+            'estado' => 'pendiente',
         ]);
 
         return response()->json($orden, 201);
